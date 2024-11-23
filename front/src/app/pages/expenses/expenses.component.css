@@ -1,0 +1,90 @@
+.expenses-block{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sort-buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sort-buttons > div{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-secondary{
+  display: flex;
+  align-items: center;
+}
+
+.bi{
+  margin-left: 10px;
+}
+
+.bi-chevron-down{
+  transform: rotate(0deg);
+  transition: transform 0.3s;
+}
+
+.bi-chevron-up{
+  transform: rotate(-180deg);
+  transition: transform 0.3s;
+}
+
+.toogleStyle{
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  user-select: none;
+}
+
+.toogleStyle > .bi{
+  margin: 0;
+  box-sizing: content-box;
+  padding: 5px 5px 1px 5px;
+}
+
+.highlight{
+  animation: highlightAnimation 2s ease-out;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.pagination .btn {
+  min-width: 40px;
+  text-align: center;
+}
+
+.pagination .btn-primary {
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.pagination .btn-secondary {
+  color: #333;
+  background-color: #f8f9fa;
+  border-color: #ddd;
+}
+
+
+@keyframes highlightAnimation {
+  from {
+    background-color: #89c0f7;
+  }
+  to {
+    background-color: white;
+  }
+}

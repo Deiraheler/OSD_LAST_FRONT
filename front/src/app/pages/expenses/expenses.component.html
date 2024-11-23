@@ -1,0 +1,58 @@
+<div class="sort-buttons">
+  <div class="sort-buttons">
+    <button (click)="toggleSort('date')" class="btn btn-secondary">
+      Sort by Date
+      <svg *ngIf="sortProperty === 'date'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
+          <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
+      </svg>
+    </button>
+    <button (click)="toggleSort('category')" class="btn btn-secondary">
+      Sort by Category
+      <svg *ngIf="sortProperty === 'category'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
+        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
+      </svg>
+    </button>
+    <button (click)="toggleSort('amount')" class="btn btn-secondary">
+      Sort by Price
+      <svg *ngIf="sortProperty === 'amount'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
+        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
+      </svg>
+    </button>
+  </div>
+  <div>
+    <div class="toogleStyle" (click)="changeItemsStyle()">
+      <svg *ngIf="itemsStyle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
+        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"></path>
+        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"></path>
+      </svg>
+      <svg *ngIf="!itemsStyle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-border-all" viewBox="0 0 16 16">
+        <path d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z"></path>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="expenses-block">
+    <app-expense-item [expense]="expense" (highlight)="highlightItem(expense._id)" [ngClass]="{ highlight: expense._id === highlightedItemId }" *ngFor="let expense of expenses"></app-expense-item>
+</div>
+
+<div class="pagination">
+  <button class="btn btn-secondary" (click)="loadExpenses(currentPage - 1)" [disabled]="currentPage === 1">
+    Previous
+  </button>
+  <button
+    *ngFor="let page of getPaginationRange()"
+    class="btn"
+    [ngClass]="{ 'btn-primary': page === currentPage, 'btn-secondary': page !== currentPage }"
+    (click)="loadExpenses(page)"
+  >
+    {{ page }}
+  </button>
+  <button
+    class="btn btn-secondary"
+    (click)="loadExpenses(currentPage + 1)"
+    [disabled]="currentPage === totalPages">
+    Next
+  </button>
+</div>
+

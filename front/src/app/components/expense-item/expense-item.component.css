@@ -1,0 +1,112 @@
+:host {
+  flex-basis: 300px;
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+:host.alternate-style {
+  flex-basis: 100%;
+}
+
+.btns{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.btn{
+  text-align: center;
+  padding: 5px;
+}
+
+.btn-primary{
+  color: rgb(128, 128, 128);
+  cursor: pointer;
+}
+
+.btn-primary:hover{
+  color: #333333;
+}
+
+.btn-danger{
+  color: rgb(128, 128, 128);
+  cursor: pointer;
+}
+
+.btn-danger:hover{
+  color: #333333;
+}
+
+.btn-success{
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-success:hover{
+  background: #218838;
+}
+
+.toast{
+  position: absolute;
+  background: #70aaff;
+  color: white;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  z-index: 2;
+  left: 0;
+  top: 0;
+}
+
+.toast-btns{
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.toast-btns > .btn{
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  background-color: rgb(0 109 255);
+}
+
+.toast-btns > .btn-danger{
+  background-color: #dc3545;
+}
+
+.toast-btns > .btn:hover{
+  background-color: #0069d9;
+}
+
+.toast-btns > .btn-danger:hover{
+  background-color: #c71526;
+}
+
+.category{
+  padding: 5px 10px;
+  background: #007fff;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: block;
+  width: max-content;
+}
+
+.date{
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+.price{
+  font-size: 1.5rem;
+  font-weight: bold;
+}
