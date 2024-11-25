@@ -19,14 +19,13 @@ import {NgIf} from "@angular/common";
 })
 export class MainComponent {
   expense: Expense = {} as Expense;
-  private expenseForm: FormGroup<{
-    date: FormControl<string | null>;
-    amount: FormControl<number | string | null>;
-    description: FormControl<string | null>;
-    category: FormControl<string | null>
-  }>;
+  public expenseForm!: FormGroup;
 
   constructor(private expenseService: ExpenseItemService) {
+
+  }
+
+  ngOnInit() {
     this.expenseForm = new FormGroup({
       category: new FormControl(this.expense?.category || '', [
         Validators.required,
@@ -82,11 +81,11 @@ export class MainComponent {
       return;
     }
 
-    this.expenseService.addExpense(this.expense);
-    this.expense = {} as Expense;
+    this.expenseService.addExpense(this.expenseForm.value);
+    this.expenseForm.reset();
   };
 
   onCategorySelected(category: string): void {
-    this.expense.category = category;
+    this.expenseForm.patchValue({ category });
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Expense from "../interfaces/expense";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs";
+import {environment} from "../../../enviroment";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,8 @@ export class ExpenseItemService {
   private sortProperty: keyof Expense = 'date';
   private sortOrder: 'asc' | 'desc' = 'asc';
 
+  private apiUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) {
     this.loadExpenses();
   }
@@ -35,7 +38,7 @@ export class ExpenseItemService {
   }
 
   loadExpenses(page: number = 1, limit: number = this.limitSubject.value) {
-    const url = `http://localhost:3000/expenses?page=${page}&limit=${limit}&sortBy=${this.sortProperty}&sortOrder=${this.sortOrder}`;
+    const url = `${this.apiUrl}/expenses?page=${page}&limit=${limit}&sortBy=${this.sortProperty}&sortOrder=${this.sortOrder}`;
     this.http.get<any>(url).subscribe((data) => {
       this.expensesSubject.next(data.expenses);
       this.totalItemsSubject.next(data.totalItems);
@@ -44,7 +47,7 @@ export class ExpenseItemService {
   }
 
   getAllCategories() {
-    const url = `http://localhost:3000/expenses/categories`;
+    const url = `${this.apiUrl}/expenses/categories`;
     return this.http.get<string[]>(url);
   }
 
@@ -55,7 +58,7 @@ export class ExpenseItemService {
   }
 
   editExpense(expense: Expense) {
-    this.http.put(`http://localhost:3000/expenses/${expense._id}`, expense).subscribe((updatedExpense) => {
+    this.http.put(`${this.apiUrl}/expenses/${expense._id}`, expense).subscribe((updatedExpense) => {
       this.loadExpenses(this.currentPageSubject.value);
     });
   }
@@ -66,16 +69,14 @@ export class ExpenseItemService {
   }
 
   addExpense(expense: Expense) {
-    this.http.post('http://localhost:3000/expenses', expense).subscribe((data: any) => {
+    this.http.post(`${this.apiUrl}/expenses`, expense).subscribe((data: any) => {
       this.loadExpenses(this.currentPageSubject.value, this.limitSubject.value);
     });
   }
 
   deleteExpense(expense: Expense) {
-    this.http.delete(`http://localhost:3000/expenses/${expense._id}`).subscribe((data: any) => {
-      const currentExpenses = this.expensesSubject.value;
-      const updatedExpenses = currentExpenses.filter((e) => e._id !== expense._id);
-      this.expensesSubject.next(updatedExpenses);
+    this.http.delete(`${this.apiUrl}/expenses/${expense._id}`).subscribe((data: any) => {
+      this.loadExpenses(this.currentPageSubject.value);
     });
   }
 }
