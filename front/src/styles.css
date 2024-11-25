@@ -87,3 +87,13 @@ main button:hover{
   background-color: #2a5c9f;
   cursor: pointer;
 }
+
+@media (max-width: 500px){
+  header{
+    flex-direction: column;
+  }
+
+  .nav{
+    margin-top: 10px;
+  }
+}

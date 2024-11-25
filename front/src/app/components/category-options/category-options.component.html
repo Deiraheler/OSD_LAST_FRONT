@@ -1,0 +1,22 @@
+<div class="category-selector">
+  <input
+    type="text"
+    [(ngModel)]="inputValue"
+    (input)="onInputChange()"
+    (focus)="showDropdown = true"
+    placeholder="Choose a category"
+    class="form-control"
+  />
+
+  <div *ngIf="showDropdown && filteredCategories.length > 0" class="dropdown">
+    <ul>
+      <li
+        *ngFor="let category of filteredCategories"
+        (click)="selectCategory(category)"
+        class="dropdown-item"
+      >
+        {{ category }}
+      </li>
+    </ul>
+  </div>
+</div>

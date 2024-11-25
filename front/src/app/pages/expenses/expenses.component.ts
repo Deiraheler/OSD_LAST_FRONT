@@ -31,7 +31,11 @@ export class ExpensesComponent {
 
   public currentPage: number = 1;
   public totalItems: number = 0;
-  public itemsPerPage!: number;
+  public itemsPerPage: number = 10;
+  public itemsPerPageOptions: number[] = [5, 10, 25, 100];
+
+  //Mobile dropdown status
+  public mobileDropdown = false;
 
   constructor(private expenseService: ExpenseItemService) {
     this.expenseService.expenses$.subscribe((expenses) => {
@@ -116,5 +120,18 @@ export class ExpensesComponent {
     }
 
     return range;
+  }
+
+  changeItemsPerPage($event: Event): void {
+    const target = $event.target as HTMLSelectElement;
+    const newLimit = parseInt(target.value, 10);
+
+    if (newLimit !== this.itemsPerPage) {
+      this.expenseService.setLimit(newLimit);
+    }
+  }
+
+  toggleMobileDropdown() {
+    this.mobileDropdown = !this.mobileDropdown;
   }
 }

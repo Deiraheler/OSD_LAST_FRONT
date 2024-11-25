@@ -9,23 +9,72 @@
 </div>
 
 <div class="card-body">
+  <!-- Category -->
   <p class="card-text category" *ngIf="!editMode">{{ expense.category }}</p>
-  <label *ngIf="editMode" [for]="expense._id + '_category'" >Category</label>
-  <input type="text" class="form-control" [id]="expense._id + '_category'" *ngIf="editMode" [(ngModel)]="expense.category">
+  <label *ngIf="editMode">Category</label>
+  <app-category-options
+    *ngIf="editMode"
+    [ngModel]="expense.category"
+    (categorySelected)="onCategorySelected($event)"
+  ></app-category-options>
+  <div *ngIf="category?.invalid && category?.touched" class="error">
+    <small *ngIf="category?.hasError('required')">Category is required.</small>
+    <small *ngIf="category?.hasError('minlength')">Minimum 3 characters.</small>
+  </div>
 
+  <!-- Description -->
   <p class="card-text" *ngIf="!editMode">{{ expense.description }}</p>
-  <label *ngIf="editMode" [for]="expense._id + '_description'">Description</label>
-  <input type="text" class="form-control" [id]="expense._id + '_description'" *ngIf="editMode" [(ngModel)]="expense.description">
+  <label *ngIf="editMode" for="description">Description</label>
+  <input
+    type="text"
+    class="form-control"
+    id="description"
+    [formControl]="description"
+    *ngIf="editMode"
+  />
+  <div *ngIf="description?.invalid && description?.touched" class="error">
+    <small *ngIf="description?.hasError('required')">Description is required.</small>
+    <small *ngIf="description?.hasError('minlength')">Minimum 3 characters.</small>
+  </div>
 
+  <!-- Amount -->
   <p class="card-text price" *ngIf="!editMode">{{ expense.amount }} €</p>
-  <label *ngIf="editMode" [for]="expense._id + '_amount'">Amount</label>
-  <input type="text" class="form-control" [id]="expense._id + '_amount'" *ngIf="editMode" [(ngModel)]="expense.amount">
+  <label *ngIf="editMode" for="amount">Amount</label>
+  <input
+    type="number"
+    class="form-control"
+    id="amount"
+    [formControl]="amount"
+    *ngIf="editMode"
+  />
+  <div *ngIf="amount?.invalid && amount?.touched" class="error">
+    <small *ngIf="amount?.hasError('required')">Amount is required.</small>
+    <small *ngIf="amount?.hasError('min')">Amount must be greater than 0.</small>
+  </div>
 
-  <p class="card-text date" *ngIf="!editMode">{{ expense.date | date }}</p>
-  <label *ngIf="editMode" [for]="expense._id + '_date'">Date</label>
-  <input type="date" class="form-control" [id]="expense._id + '_date'" *ngIf="editMode" [(ngModel)]="expense.date">
+  <!-- Date -->
+  <p class="card-text date" *ngIf="!editMode">{{ expense.date | date: 'dd-MM-yyyy' }}</p>
+  <label *ngIf="editMode" for="date">Date</label>
+  <input
+    type="date"
+    class="form-control"
+    id="date"
+    [formControl]="date"
+    *ngIf="editMode"
+  />
+  <div *ngIf="date?.invalid && date?.touched" class="error">
+    <small *ngIf="date?.hasError('required')">Date is required.</small>
+  </div>
 
-  <div class="btn btn-success" (click)="saveExpense()" *ngIf="editMode">Save</div>
+  <!-- Buttons -->
+  <button
+    class="btn btn-success"
+    (click)="saveExpense()"
+    *ngIf="editMode"
+    [disabled]="expenseForm.invalid"
+  >
+    Save
+  </button>
   <div class="btns">
     <div class="btn btn-primary" (click)="openEdit()" *ngIf="!editMode"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
       <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>

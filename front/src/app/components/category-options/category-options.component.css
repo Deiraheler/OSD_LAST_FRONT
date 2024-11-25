@@ -1,0 +1,40 @@
+.category-selector {
+  position: relative;
+  width: 100%;
+}
+
+.category-selector .form-control {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.category-selector .dropdown {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.category-selector .dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.category-selector .dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+}

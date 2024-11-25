@@ -110,3 +110,10 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+.error{
+  color: red;
+  font-size: 0.9em;
+  position: absolute;
+  transform: translateY(-100%);
+}

@@ -5,13 +5,13 @@
   flex-wrap: wrap;
 }
 
-.sort-buttons{
+.sub-nav{
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.sort-buttons > div{
+.sub-nav > div{
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
@@ -77,6 +77,46 @@
   color: #333;
   background-color: #f8f9fa;
   border-color: #ddd;
+}
+
+.toggleDropdown{
+  display: none;
+  background-color: #0077f1;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  box-sizing: content-box;
+  cursor: pointer;
+}
+
+.toggleDropdown:hover{
+  background-color: #0056b3;
+}
+
+.sort-btns{
+  display: flex;
+  gap: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .toggleDropdown{
+    display: block;
+  }
+
+  .sort-btns{
+    display: none;
+    flex-direction: column;
+  }
+
+  .dropOpen .sort-btns{
+    display: flex;
+    position: absolute;
+    z-index: 2;
+    margin-top: 30px;
+    background-color: #bdd4ff;
+    padding: 10px;
+    border-radius: 10px;
+  }
 }
 
 

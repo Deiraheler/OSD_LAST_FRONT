@@ -1,25 +1,33 @@
-<div class="sort-buttons">
-  <div class="sort-buttons">
-    <button (click)="toggleSort('date')" class="btn btn-secondary">
-      Sort by Date
-      <svg *ngIf="sortProperty === 'date'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
+<div class="sub-nav">
+  <div class="sort-buttons" [class.dropOpen]="mobileDropdown">
+    <svg (click)="toggleMobileDropdown()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="toggleDropdown" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"></path>
+    </svg>
+    <div class="sort-btns">
+      <button (click)="toggleSort('date')" class="btn btn-secondary">
+        Sort by Date
+        <svg *ngIf="sortProperty === 'date'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
           <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
-      </svg>
-    </button>
-    <button (click)="toggleSort('category')" class="btn btn-secondary">
-      Sort by Category
-      <svg *ngIf="sortProperty === 'category'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
-        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
-      </svg>
-    </button>
-    <button (click)="toggleSort('amount')" class="btn btn-secondary">
-      Sort by Price
-      <svg *ngIf="sortProperty === 'amount'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
-        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
-      </svg>
-    </button>
+        </svg>
+      </button>
+      <button (click)="toggleSort('category')" class="btn btn-secondary">
+        Sort by Category
+        <svg *ngIf="sortProperty === 'category'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
+          <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
+        </svg>
+      </button>
+      <button (click)="toggleSort('amount')" class="btn btn-secondary">
+        Sort by Price
+        <svg *ngIf="sortProperty === 'amount'" class="bi" fill="currentColor" [ngClass]="sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down'" width="16" height="16">
+          <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"></path>
+        </svg>
+      </button>
+    </div>
   </div>
   <div>
+    <select class="form-select" [(ngModel)]="itemsPerPage" [selectedIndex]="itemsPerPage" (change)="changeItemsPerPage($event)">
+      <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
+    </select>
     <div class="toogleStyle" (click)="changeItemsStyle()">
       <svg *ngIf="itemsStyle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
         <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"></path>

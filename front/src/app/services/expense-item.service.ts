@@ -43,6 +43,11 @@ export class ExpenseItemService {
     });
   }
 
+  getAllCategories() {
+    const url = `http://localhost:3000/expenses/categories`;
+    return this.http.get<string[]>(url);
+  }
+
   setSort(property: keyof Expense, order: 'asc' | 'desc') {
     this.sortProperty = property;
     this.sortOrder = order;
@@ -55,10 +60,14 @@ export class ExpenseItemService {
     });
   }
 
+  setLimit(limit: number) {
+    this.limitSubject.next(limit);
+    this.loadExpenses(this.currentPageSubject.value, limit); // Reload with updated limit
+  }
+
   addExpense(expense: Expense) {
     this.http.post('http://localhost:3000/expenses', expense).subscribe((data: any) => {
-      const currentExpenses = this.expensesSubject.value;
-      this.expensesSubject.next([...currentExpenses, data]);
+      this.loadExpenses(this.currentPageSubject.value, this.limitSubject.value);
     });
   }
 
