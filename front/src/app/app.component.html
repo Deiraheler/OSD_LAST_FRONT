@@ -1,10 +1,19 @@
 <header>
   <h1>Expenses App</h1>
-  <div class="nav">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Add</a>
-    <a routerLink="/expenses" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">History</a>
+  <div *ngIf="user$ | async as user">
+    <span>Welcome, {{ user.name }}!</span>
+    <div class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Add</a>
+      <a routerLink="/expenses" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">History</a>
+      <a (click)="logout()">Log Out</a>
+    </div>
+  </div>
+  <div *ngIf="!(user$ | async)">
+    <div class="nav">
+      <a routerLink="/auth" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Log In</a>
+    </div>
   </div>
 </header>
 <main>
-<router-outlet />
+  <router-outlet></router-outlet>
 </main>

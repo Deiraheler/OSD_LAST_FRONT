@@ -38,7 +38,7 @@ export class ExpenseItemService {
   }
 
   loadExpenses(page: number = 1, limit: number = this.limitSubject.value) {
-    const url = `${this.apiUrl}/expenses?page=${page}&limit=${limit}&sortBy=${this.sortProperty}&sortOrder=${this.sortOrder}`;
+    const url = `${this.apiUrl}/api/expenses?page=${page}&limit=${limit}&sortBy=${this.sortProperty}&sortOrder=${this.sortOrder}`;
     this.http.get<any>(url).subscribe((data) => {
       this.expensesSubject.next(data.expenses);
       this.totalItemsSubject.next(data.totalItems);
@@ -47,7 +47,7 @@ export class ExpenseItemService {
   }
 
   getAllCategories() {
-    const url = `${this.apiUrl}/expenses/categories`;
+    const url = `${this.apiUrl}/api/expenses/categories`;
     return this.http.get<string[]>(url);
   }
 
@@ -58,7 +58,7 @@ export class ExpenseItemService {
   }
 
   editExpense(expense: Expense) {
-    this.http.put(`${this.apiUrl}/expenses/${expense._id}`, expense).subscribe((updatedExpense) => {
+    this.http.put(`${this.apiUrl}/api/expenses/${expense._id}`, expense).subscribe((updatedExpense) => {
       this.loadExpenses(this.currentPageSubject.value);
     });
   }
@@ -69,13 +69,13 @@ export class ExpenseItemService {
   }
 
   addExpense(expense: Expense) {
-    this.http.post(`${this.apiUrl}/expenses`, expense).subscribe((data: any) => {
+    this.http.post(`${this.apiUrl}/api/expenses`, expense).subscribe((data: any) => {
       this.loadExpenses(this.currentPageSubject.value, this.limitSubject.value);
     });
   }
 
   deleteExpense(expense: Expense) {
-    this.http.delete(`${this.apiUrl}/expenses/${expense._id}`).subscribe((data: any) => {
+    this.http.delete(`${this.apiUrl}/api/expenses/${expense._id}`).subscribe((data: any) => {
       this.loadExpenses(this.currentPageSubject.value);
     });
   }
