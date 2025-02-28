@@ -3,7 +3,7 @@
 FROM node:22.8-alpine AS build
 # line 8 -if directory does not exist, WORKDIR creates it
 # line 8 path is relative to current working directory
-WORKDIR ../front
+WORKDIR /front
 # line 10 copy all files from current location to workdir
 COPY . .
 # line 12 install node libraries
