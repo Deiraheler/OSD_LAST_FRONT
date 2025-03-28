@@ -1,25 +1,20 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {ExpenseItemService} from "./services/expense-item.service";
-import {AuthService} from "./services/auth.service";
-import {AsyncPipe, NgIf} from "@angular/common";
-import { Router} from "@angular/router";
-import {Observable} from "rxjs";
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLinkActive, RouterLink, NgIf, AsyncPipe],
+  imports: [RouterOutlet, RouterLinkActive, RouterLink, NgIf],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'front';
-  user$: Observable<any>;
-
-  constructor(private authService: AuthService, private router: Router) {
-    this.user$ = this.authService.userPayload$; // Subscribe to user state
-  }
+  title = 'Expenses';
+  guest: any;
+  constructor(public authService: AuthService, private router: Router) {}
 
   logout() {
     this.authService.logout();

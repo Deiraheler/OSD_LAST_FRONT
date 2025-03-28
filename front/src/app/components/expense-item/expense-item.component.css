@@ -1,13 +1,15 @@
 :host {
   flex-basis: 300px;
   position: relative;
-  background: white;
-  padding: 20px;
   border-radius: 5px;
 }
 
 :host.alternate-style {
   flex-basis: 100%;
+}
+
+.card-body{
+  padding: 10px;
 }
 
 .btns{
@@ -24,16 +26,12 @@
 }
 
 .btn-primary{
-  color: rgb(128, 128, 128);
+  color: white;
   cursor: pointer;
 }
 
-.btn-primary:hover{
-  color: #333333;
-}
-
 .btn-danger{
-  color: rgb(128, 128, 128);
+  color: white;
   cursor: pointer;
 }
 
@@ -116,4 +114,68 @@
   font-size: 0.9em;
   position: absolute;
   transform: translateY(-100%);
+}
+
+
+/* Admin button styles */
+.admin-controls {
+  margin-bottom: 0.5rem;
+}
+
+.admin-controls .btn {
+  margin-right: 0.5rem;
+}
+
+.card-body.approved {
+  color: white;
+  background-color: #49b44b;
+}
+
+.card-body.rejected {
+  color: white;
+  background-color: #ff4242;
+}
+
+.card-body.pending {
+  color: white;
+  background-color: #333;
+}
+
+.card-body.pending.highlight {
+  animation: highlightAnimationPending 1s;
+}
+
+.card-body.approved.highlight {
+  animation: highlightAnimationApproved 1s;
+}
+
+.card-body.rejected.highlight {
+  animation: highlightAnimationRejected 1s;
+}
+
+@keyframes highlightAnimationApproved {
+  from {
+    background-color: #1c3586;
+  }
+  to {
+    background-color: #49b44b;
+  }
+}
+
+@keyframes highlightAnimationRejected {
+  from {
+    background-color: #1c3586;
+  }
+  to {
+    background-color: #ff4242;
+  }
+}
+
+@keyframes highlightAnimationPending {
+  from {
+    background-color: #1c3586;
+  }
+  to {
+    background-color: #333;
+  }
 }

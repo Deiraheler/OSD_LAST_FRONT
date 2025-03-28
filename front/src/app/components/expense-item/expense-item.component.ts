@@ -1,9 +1,10 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import Expense from "../../interfaces/expense";
-import { ExpenseItemService } from "../../services/expense-item.service";
-import { CategoryOptionsComponent } from "../category-options/category-options.component";
-import {DatePipe, NgIf} from "@angular/common";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import Expense from '../../interfaces/expense';
+import { ExpenseItemService } from '../../services/expense-item.service';
+import { CategoryOptionsComponent } from '../category-options/category-options.component';
+import {DatePipe, NgClass, NgIf} from '@angular/common';
+import { AuthService } from '../../services/auth.service'
 
 @Component({
   selector: 'app-expense-item',
@@ -13,30 +14,44 @@ import {DatePipe, NgIf} from "@angular/common";
     DatePipe,
     ReactiveFormsModule,
     NgIf,
-    FormsModule
+    FormsModule,
+    NgClass
   ],
   templateUrl: './expense-item.component.html',
-  styleUrl: './expense-item.component.css'
+  styleUrls: ['./expense-item.component.css']
 })
 export class ExpenseItemComponent {
   public editMode = false;
   public deleteMode = false;
-  public itemsStyle: boolean = false;
-  @HostBinding('class.alternate-style') applyAlternateStyle = false;
 
-  @Input() expense!: Expense;
+  get highlightedItemId(): string | null {
+    return this.expenseStore.highlightedItemId();
+  }
+
+  // Use a HostBinding getter to apply alternate style based on the store's signal.
+  @HostBinding('class.alternate-style')
+  get applyAlternateStyle() {
+    return this.expenseStore.itemsStyle();
+  }
+
+  @Input() expense!: {
+    date: string;
+    amount: number;
+    description: string;
+    _id: string;
+    category: string;
+    status: string
+  };
   public message!: string;
-
   @Output() highlight = new EventEmitter<void>();
   public expenseForm!: FormGroup;
 
-  constructor(private expenseItemService: ExpenseItemService) {
+  constructor(
+    private expenseStore: ExpenseItemService, // Use the new store
+    public authService: AuthService // AuthService now uses Signals
+  ) {
     this.message = 'Are you sure you want to delete this expense?';
-
-    this.expenseItemService.itemsStyle$.subscribe((itemsStyle) => {
-      this.itemsStyle = itemsStyle;
-      this.applyAlternateStyle = itemsStyle;
-    });
+    // We no longer subscribe to itemsStyle$—we use the signal directly in the getter above.
   }
 
   ngOnInit() {
@@ -95,7 +110,6 @@ export class ExpenseItemComponent {
 
   openEdit() {
     this.editMode = true;
-
     if (this.expense.date) {
       this.expenseForm.patchValue({
         date: new Date(this.expense.date).toISOString().split('T')[0],
@@ -113,7 +127,8 @@ export class ExpenseItemComponent {
 
   deleteExpense() {
     if (this.expense) {
-      this.expenseItemService.deleteExpense(this.expense);
+      // Use the store's deletion method (assume you have updated your ExpenseStoreService accordingly)
+      this.expenseStore.deleteExpense(<Expense>this.expense);
     }
   }
 
@@ -126,15 +141,20 @@ export class ExpenseItemComponent {
       this.expenseForm.markAllAsTouched();
       return;
     }
-
     const updatedExpense = {
       ...this.expense,
       ...this.expenseForm.value,
       date: new Date(this.expenseForm.value.date).toISOString(),
     };
-
-    this.expenseItemService.editExpense(updatedExpense);
+    // Use the store's editExpense method to update the expense
+    this.expenseStore.editExpense(updatedExpense);
     this.highlight.emit();
     this.editMode = false;
+  }
+
+  // New method for admin actions to update the expense status
+  updateStatus(expenseId: string, status: "approved" | "rejected"): void {
+    const updatedExpense: Expense = { ...this.expense, status };
+    this.expenseStore.editExpense(updatedExpense);
   }
 }

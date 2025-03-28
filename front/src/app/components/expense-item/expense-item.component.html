@@ -8,7 +8,21 @@
   </div>
 </div>
 
-<div class="card-body">
+<div [ngClass]="{
+  'card-body': true,
+  'approved': expense.status === 'approved',
+  'rejected': expense.status === 'rejected',
+  'pending': expense.status === 'pending',
+  'highlight': expense._id === highlightedItemId
+}">
+  <div class="admin-controls" *ngIf="authService.isAdmin()">
+    <button class="btn btn-success" (click)="updateStatus(expense._id, 'approved')">
+      Approve
+    </button>
+    <button class="btn btn-warning" (click)="updateStatus(expense._id, 'rejected')">
+      Reject
+    </button>
+  </div>
   <!-- Category -->
   <p class="card-text category" *ngIf="!editMode">{{ expense.category }}</p>
   <label *ngIf="editMode">Category</label>

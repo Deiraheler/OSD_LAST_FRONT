@@ -4,4 +4,5 @@ export default interface Expense {
   category: string;
   date: string;
   description: string;
+  status: 'pending' | 'approved' | 'rejected';
 }

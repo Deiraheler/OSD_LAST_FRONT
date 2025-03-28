@@ -9,12 +9,8 @@ import {PasswordRecoveryComponentPage} from "./pages/password-recovery/password-
 
 export const routes: Routes = [
   {path: '', component: MainComponent, pathMatch: 'full', canActivate: [authGuard]},
-  {path: 'auth', pathMatch: 'full',
-  children: [
-    {path: '', component: AuthComponent, pathMatch: 'full'},  //page for login
-    //page for password recovery
-    {path: 'recovery', component: PasswordRecoveryComponent},
-  ]},
+  {path: 'auth', pathMatch: 'full', component: AuthComponent},
+  {path: 'recovery', component: PasswordRecoveryComponent, pathMatch: 'full'},
   {
     path: "reset-password",
     component: PasswordRecoveryComponentPage,

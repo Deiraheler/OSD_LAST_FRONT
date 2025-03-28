@@ -1,10 +1,9 @@
-import {Component, HostBinding} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Component, WritableSignal} from '@angular/core';
+import { DatePipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ExpenseItemComponent } from '../../components/expense-item/expense-item.component';
+import { ExpenseItemService } from '../../services/expense-item.service';
 import Expense from "../../interfaces/expense";
-import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {ExpenseItemComponent} from "../../components/expense-item/expense-item.component";
-import {ExpenseItemService} from "../../services/expense-item.service";
 
 @Component({
   selector: 'app-expenses',
@@ -18,59 +17,27 @@ import {ExpenseItemService} from "../../services/expense-item.service";
     NgClass
   ],
   templateUrl: './expenses.component.html',
-  styleUrl: './expenses.component.css'
+  styleUrls: ['./expenses.component.css']
 })
 export class ExpensesComponent {
-  public expenses: Expense[] = [];
-  public itemsStyle: boolean = false;
+  expenses = this.expenseStore.expenses;
+  totalItems = this.expenseStore.totalItems;
+  currentPage = this.expenseStore.currentPage;
+  limit = this.expenseStore.limit;
+  itemsStyle = this.expenseStore.itemsStyle;
+  highlightedItemId: WritableSignal<string | null> = this.expenseStore.highlightedItemId;
 
   public sortProperty: keyof Expense | null = null;
   public sortOrder: 'asc' | 'desc' = 'asc';
-
-  public highlightedItemId: string | null = null;
-
-  public currentPage: number = 1;
-  public totalItems: number = 0;
-  public itemsPerPage: number = 10;
   public itemsPerPageOptions: number[] = [5, 10, 25, 100];
-
-  //Mobile dropdown status
   public mobileDropdown = false;
 
-  constructor(private expenseService: ExpenseItemService) {
-    this.expenseService.expenses$.subscribe((expenses) => {
-      this.expenses = expenses;
-
-      if (this.highlightedItemId) {
-        setTimeout(() => {
-          this.highlightedItemId = null;
-        }, 2000);
-      }
-
-      this.sortExpenses();
-    });
-
-    this.expenseService.totalItems$.subscribe((total) => {
-      this.totalItems = total;
-    });
-
-    this.expenseService.limit$.subscribe((limit) => {
-      this.itemsPerPage = limit;
-    });
-
-    this.expenseService.currentPage$.subscribe((page) => {
-      this.currentPage = page;
-    });
-
-    this.expenseService.itemsStyle$.subscribe((itemsStyle) => {
-      this.itemsStyle = itemsStyle;
-    });
-
+  constructor(private expenseStore: ExpenseItemService) {
     this.loadExpenses();
-  };
+  }
 
   changeItemsStyle() {
-    this.expenseService.toggleItemsStyle();
+    this.expenseStore.toggleItemsStyle();
   }
 
   toggleSort(property: keyof Expense) {
@@ -80,54 +47,41 @@ export class ExpensesComponent {
       this.sortProperty = property;
       this.sortOrder = 'asc';
     }
-    this.expenseService.setSort(this.sortProperty, this.sortOrder);
-  }
-
-  sortExpenses() {
-    if (!this.sortProperty) return;
-    this.expenses.sort((a, b) => {
-      if (a[this.sortProperty!] < b[this.sortProperty!]) {
-        return this.sortOrder === 'asc' ? -1 : 1;
-      } else if (a[this.sortProperty!] > b[this.sortProperty!]) {
-        return this.sortOrder === 'asc' ? 1 : -1;
-      } else {
-        return 0;
-      }
-    });
+    this.expenseStore.setSort(this.sortProperty, this.sortOrder);
   }
 
   highlightItem(itemId: string) {
-    this.highlightedItemId = itemId;
+    this.highlightedItemId.set(itemId);
+    setTimeout(() => {
+      this.highlightedItemId.set(null);
+    }, 2000);
   }
 
   loadExpenses(page: number = 1) {
-    this.expenseService.loadExpenses(page, this.itemsPerPage);
+    // Use the current value of limit by calling this.limit() as a function
+    this.expenseStore.loadExpenses(page, this.limit());
   }
 
   get totalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
+    return Math.ceil(this.totalItems() / this.limit());
   }
 
   getPaginationRange(): number[] {
     const totalPages = this.totalPages;
     const range: number[] = [];
-
-    const start = Math.max(1, this.currentPage - 2);
-    const end = Math.min(totalPages, this.currentPage + 2);
-
+    const start = Math.max(1, this.currentPage() - 2);
+    const end = Math.min(totalPages, this.currentPage() + 2);
     for (let i = start; i <= end; i++) {
       range.push(i);
     }
-
     return range;
   }
 
   changeItemsPerPage($event: Event): void {
     const target = $event.target as HTMLSelectElement;
     const newLimit = parseInt(target.value, 10);
-
-    if (newLimit !== this.itemsPerPage) {
-      this.expenseService.setLimit(newLimit);
+    if (newLimit !== this.limit()) {
+      this.expenseStore.setLimit(newLimit);
     }
   }
 

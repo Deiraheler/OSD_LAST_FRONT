@@ -1,53 +1,52 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {NgIf} from "@angular/common";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-password-recovery',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf,
+    ReactiveFormsModule
+  ],
   templateUrl: './password-recovery.component.html',
   styleUrl: './password-recovery.component.css'
 })
 export class PasswordRecoveryComponent implements OnInit {
-  token: string | null = null;
-  newPassword: string = '';
+  recoveryForm!: FormGroup;
   message: string = '';
-  success: boolean = false;
+  error: string = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private http: HttpClient
-  ) {}
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    })
+  };
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Read the 'token' from the query parameters
-    this.route.queryParams.subscribe(params => {
-      this.token = params['token'] || null;
+    this.recoveryForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email])
     });
   }
 
-  onSubmit(): void {
-    // Basic check if we have a token
-    if (!this.token) {
-      this.message = 'Invalid or missing reset token.';
+  sendRecoveryLink(): void {
+    if (this.recoveryForm.invalid) {
+      this.recoveryForm.markAllAsTouched();
       return;
     }
+    const payload = { email: this.recoveryForm.get('email')?.value };
 
-    // Construct the request body
-    const payload = {
-      token: this.token,
-      newPassword: this.newPassword
-    };
 
-    // POST to your backend / serverless API
-    // Replace 'API_ENDPOINT' with your actual URL
-    this.http.post('https://<API_ENDPOINT>/confirmPasswordReset', payload)
+
+    this.http.post('https://p6t8t8ddq0.execute-api.eu-west-1.amazonaws.com/1/create-recovery', payload, this.httpOptions)
       .subscribe({
         next: (response: any) => {
           // Assuming the server returns { success: true, message: '...' } on success
           if (response.success) {
-            this.success = true;
             this.message = response.message || 'Password updated successfully!';
           } else {
             this.message = response.message || 'Something went wrong.';

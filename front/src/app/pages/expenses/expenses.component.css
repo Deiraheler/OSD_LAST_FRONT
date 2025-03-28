@@ -49,10 +49,6 @@
   padding: 5px 5px 1px 5px;
 }
 
-.highlight{
-  animation: highlightAnimation 2s ease-out;
-}
-
 .pagination {
   display: flex;
   justify-content: center;
@@ -116,15 +112,5 @@
     background-color: #bdd4ff;
     padding: 10px;
     border-radius: 10px;
-  }
-}
-
-
-@keyframes highlightAnimation {
-  from {
-    background-color: #89c0f7;
-  }
-  to {
-    background-color: white;
   }
 }
