@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-auth',
@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
     NgIf,
     ReactiveFormsModule,
     NgForOf,
+    RouterLink,
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
